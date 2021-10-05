@@ -6,17 +6,10 @@
     "configurations": [
 
         {
-            "name": "Download and Run current file",
-            "type": "ev3devBrowser",
-            "request": "launch",
-            "program": "/home/robot/${workspaceFolderBasename}/${relativeFile}",
-            "interactiveTerminal": true
-        },
-        {
             "name": "Download and Run main",
             "type": "ev3devBrowser",
             "request": "launch",
-            "program": "/home/robot/${workspaceFolderBasename}/main.py",
+            "program": "/home/robot/${workspaceFolderBasename}/programs/main.py",
             "interactiveTerminal": true
         }
     ]
