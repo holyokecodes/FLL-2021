@@ -160,6 +160,18 @@ class FUNCTION_LIBRARY:
         self.driveBase.stop()
         ##self.hub.speaker.say("I have reached " + str(floor(distance/25.4)) + "inches") removed this, pauses robot too long
 
+    def turn(self, degrees, speed=100):
+        turnMode = ""
+        if (self.gyro3drift and self.gyro4drift):
+            turn(degrees)
+        elif (self.gyro3drift and not self.gyro4drift):
+            turnMode = "GYRO4"
+        elif (not self.gyro3drift and self.gyro4drift):
+            turnMode = "GYRO3"
+        elif (not self.gyro3drift and not self.gyro4drift):
+            turnMode = "GYRO"
+
+
     def mmToInch(self, mm):
         return mm/25.4
     def inchToMM(self, inch):
@@ -168,5 +180,3 @@ class FUNCTION_LIBRARY:
         return ms/1000
     def secondToMS(self, s):
         return s*1000
-
-        
