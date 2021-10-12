@@ -7,7 +7,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from library import FuctionLibrary
+from library import FUNCTION_LIBRARY
 
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
@@ -15,13 +15,19 @@ from library import FuctionLibrary
 
 
 # Create your objects here.
-ev3 = EV3Brick()
-motorA = Motor(Port.A)
+leftMotor = Motor(Port.B)
+rightMotor = Motor(Port.C)
+mediumMotorA = Motor(Port.A)
+mediumMotorD = Motor(Port.D)
 
-left_motor = Motor(Port.B)
-right_motor = Motor(Port.C)
+colorSensor1 = ColorSensor(Port.S1)
+colorSensor2 = ColorSensor(Port.S2)
+
+gyro3 = GyroSensor(Port.S3)
+gyro4 = GyroSensor(Port.S4)
 
 # Initialize the drive base.
-robot = DriveBase(left_motor, right_motor, wheel_diameter=55.5, axle_track=104)
+robot = DriveBase(leftMotor, rightMotor, wheel_diameter=55.5, axle_track=104)
+library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-lineFollowUntilShade(shade=90)
+library.lineFollowUntilShade(shade=90)
