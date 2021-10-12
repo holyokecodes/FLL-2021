@@ -12,9 +12,9 @@ from library import FUNCTION_LIBRARY
 
 #import the combos
 from comboOne import comboOne
-# from comboTwo import *
-# from comboThree import *
-# from comboFour import *
+from comboTwo import comboTwo
+from comboThree import comboThree
+from comboFour import comboFour
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # For more information:
@@ -68,7 +68,7 @@ while True:
         ev3.screen.load_image(Image('GUI/ComboThree.PNG'))
         comboThree(library)
         ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
-        
+
     if Button.UP in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboFour.PNG'))
         comboFour(library)

@@ -7,5 +7,5 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
-def comboOne(library):
-    library.turn(90)
+def comboTwo(library):
+    pass
