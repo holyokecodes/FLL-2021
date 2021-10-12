@@ -4,8 +4,7 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import Image, SoundFile, ImageFile
-from time import sleep
+from pybricks.media.ev3dev import SoundFile, ImageFile
 
 from math import *
 
@@ -36,75 +35,59 @@ class FUNCTION_LIBRARY:
         self.gyro3Drift = False
         self.gyro4Drift = False
 
-    def shutdown(self):
-        self.hub.speaker.say("Logic error, error error error error error error error error error error errorrr Non halting program detected, shutting down")
-        #self.hub.speaker.say("Shutting down...")
-        self.hub.speaker.play_notes(['C4/4', 'F3/4', 'F2/4'])
-
+    #PURPOSE: Calibrates robot
+    #PARAMS: None
     def calibrate(self):
         self.checkGyroscopes()
         self.calibrateColors()
     
+    #PURPOSE: Calibrates Gyroscopes
+    #PARAMS: None
     def checkGyroscopes(self):
-        if self.gyroscope3 != -1: self.gyroscope3.reset_angle(0)
-        if self.gyroscope4 != -1: self.gyroscope4.reset_angle(0)
-
-        try: print("Gyro 3 Angle First: " + str(self.gyroscope3.angle()))
-        except: print("Gyro 3 Angle First: [Error]")
-        try: print("Gyro 4 Angle First: " + str(self.gyroscope4.angle()))
-        except: print("Gyro 4 Angle First: [Error]")
-
-        sleep(1)
-
-        try: print("Gyro 3 Angle Second: " + str(self.gyroscope3.angle()))
-        except: print("Gyro 3 Angle Second: [Error]")
-        try: print("Gyro 4 Angle Second: " + str(self.gyroscope4.angle()))
-        except: print("Gyro 4 Angle Second: [Error]")
-
-        if self.gyroscope3 != -1: self.gyro3Drift = (self.gyroscope3.angle() != 0)
-        else: self.gyro3Drift = True
-
-        if self.gyroscope4 != -1: self.gyro4Drift = (self.gyroscope4.angle() != 0)
-        else: self.gyro4Drift = True
-
-        print("Gyro 3 Drift: " + str(self.gyro3Drift))
-        print("Gyro 4 Drift: " + str(self.gyro4Drift))
-
-    def calibrateColors(self):
-        blackDone = False
-        whiteDone = False
-
-        print("old black: " + str(self.black) + ", old white: " + str(self.white))
-        self.hub.screen.load_image(Image('GUI/ColorCalibrateNone.PNG'))
+        self.gyroscope3.resetAngle(0)
+        self.gyroscope4.resetAngle(0)
+        self.robot.sleep(1)
+        self.gyro3Drift = self.gyroscope3.angle != 0
+        self.gyro4Drift = self.gyroscope4.angle != 0
+    
+    #PURPOSE: Calibrates Color Sensors
+    #PARAMS: None
+    def callibrateColors(self):
+        numbersDone = 0
+        print("old black: " + self.black + ", old white: " + self.white)
         while True:
-            if Button.LEFT in self.hub.buttons.pressed() and not blackDone:
+            if Button.LEFT in self.hub.buttons.pressed():
                 self.black = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                if (whiteDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
-                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateBlack.PNG'))
-                blackDone = True
+                numbersDone += 1
 
-            if Button.RIGHT in self.hub.buttons.pressed() and not whiteDone:
+            if Button.RIGHT in self.hub.buttons.pressed():
                 self.white = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                if (blackDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
-                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateWhite.PNG'))
-                whiteDone = True
-                
-            if blackDone and whiteDone:
-                sleep(1)
+                numbersDone += 1
+            
+            if numbersDone == 2:
                 break
+        print("new black: " + self.black + ", new white: " + self.white)
 
-        print("new black: " + str(self.black) + ", new white: " + str(self.white))
+    #PURPOSE: Line follows until it finds a certain shade of B&W (0 is black, 100 is white)
+    #PARAMS: 
+    #p: https://youtu.be/AMBWV_HGYj4?t=212
+    #DRIVE_SPEED: How fast the robot should go.
+    #BLACK: Black to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #WHITE: White to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #SHADE: Shade to stop at.
+    #sensor_lf: Sensor to line follow with.
+    #sensor_stop: Sensor to determine when to stop.
+    #debug: Turns on print statements to see what the sensor_lf is seeing.
 
-    def lineFollowUntilBlack(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, sensor_stop=-1,  debug=False):
+    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, SHADE=-1, sensor_lf=-1, sensor_stop=-1,  debug=False):
         if (sensor_lf == -1):
             sensor_lf = self.colorSensor1
         if (sensor_stop == -1):
             sensor_stop = self.colorSensor2 
-
+        if (SHADE == -1):
+            print("ERROR: Please define the shade that you'll be using.")
         PROPORTIONAL_GAIN = p
-        #BLACK = 9 #what is black
-        #WHITE = 85 #what is white, also what is life (42)
-        threshold = (BLACK + WHITE) / 2 #the center of black+white
+        threshold = (BLACK + WHITE) / 2 #the average/mean of black+white
 
         while True: #forever, do
             if (debug):
@@ -113,33 +96,19 @@ class FUNCTION_LIBRARY:
             self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
             
             #stop condition 
-            if sensor_stop.reflection() <= BLACK: #
+            if sensor_stop.reflection() <= SHADE: 
                 self.driveBase.stop()
-                break #thrillitup
+                break
 
-    def lineFollowUntilWhite(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, sensor_stop=-1,  debug=False):
-        if (sensor_lf == -1):
-            sensor_lf = self.colorSensor1
-        if (sensor_stop == -1):
-            sensor_stop = self.colorSensor2 # I NEED TO CREATE NEW CONSTANt
-
-        PROPORTIONAL_GAIN = p
-        #BLACK = 9 #what is black
-        #WHITE = 85 #what is white, also what is life (42)
-        threshold = (BLACK + WHITE) / 2 #the center of black+white
-
-        while True: #forever, do
-            if (debug):
-                print(sensor_lf.reflection()) #how bright the stuff the color sensor sees is
-            #Calculate the turn rate from the devation and set the drive base speed and turn rate.
-            self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
-            
-            #stop condition 
-            if sensor_stop.reflection() <= WHITE: #
-                self.driveBase.stop()
-                break #thrillitup
-
-
+    #PURPOSE: Line follows until a timer finishes
+    #PARAMS: 
+    #p: https://youtu.be/AMBWV_HGYj4?t=212
+    #DRIVE_SPEED: How fast the robot should go.
+    #BLACK: Black to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #WHITE: White to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #sensor_lf: Sensor to line follow with.
+    #time: How long the timer should go for in milliseconds (1/1000 of a second).
+    #debug: Turns on print statements to see what the sensor_lf is seeing and to say how long the timer went for.
     def lineFollowForTime(self, p=1, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, time=10000, debug=False):
         if (sensor_lf == -1):
             sensor_lf = self.colorSensor2
@@ -159,15 +128,24 @@ class FUNCTION_LIBRARY:
             self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
             
             #stop condition 
-            if self.stopWatch.time() > time: #
-                break #STOP THIEF
+            if self.stopWatch.time() > time: 
+                break 
 
         self.driveBase.stop()
-        self.hub.speaker.say("I line followed for" + str(floor(time/1000)) + "seconds")
-
+        if debug:
+            self.hub.speaker.say("I line followed for" + str(floor(time/1000)) + "seconds")
+    
+    #PURPOSE: Line follows until the robot has gone a certain distance
+    #PARAMS: 
+    #p: https://youtu.be/AMBWV_HGYj4?t=212
+    #DRIVE_SPEED: How fast the robot should go.
+    #BLACK: Black to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #WHITE: White to determine treshold: https://youtu.be/AMBWV_HGYj4?t=90.
+    #SHADE: Shade to stop at.
+    #sensor_lf: Sensor to line follow with.
+    #distance: Distance to stop at in millimeters (1/1000 of a meter or 25.4 millimeters per inch)
+    #debug: Turns on print statements to see what the sensor_lf is seeing.
     def lineFollowForDistance(self, p=1, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, distance=10000, debug=False):
-        #BLACK = 9 #what is black
-        #WHITE = 85 #what is white, also what is life (42)
         if (sensor_lf == -1):
             sensor_lf = self.colorSensor2
         elif (sensor_lf == -2):
@@ -176,36 +154,32 @@ class FUNCTION_LIBRARY:
         threshold = (BLACK + WHITE) / 2 #the center of black+white
         startingDistance = self.driveBase.distance()
         while True: #forever, do
-
             if (debug):
                 print(sensor_lf.reflection()) #how bright the stuff the color sensor sees is
             #Calculate the turn rate from the devation and set the drive base speed and turn rate.
             self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
             
             #stop condition 
-            if self.driveBase.distance()-startingDistance > distance: #
-                break #STOP THIEF
+            if self.driveBase.distance()-startingDistance > distance: 
+                break 
         self.driveBase.stop()
-        ##self.hub.speaker.say("I have reached " + str(floor(distance/25.4)) + "inches") removed this, pauses robot too long
 
+    #PURPOSE: Turns the robot.
+    #PARAMS:
+    #degrees: The number of degrees the robot turned.
+    #speed: The speed the robot turns at in mm/s.
     def turn(self, degrees, speed=100):
         turnMode = ""
-        if (self.gyro3Drift and self.gyro4Drift):
-            turnMode = "NO GYRO"
-        elif (self.gyro3Drift and not self.gyro4Drift):
+        if (self.gyro3drift and self.gyro4drift):
+            turn(degrees)
+        elif (self.gyro3drift and not self.gyro4drift):
             turnMode = "GYRO4"
-        elif (not self.gyro3Drift and self.gyro4Drift):
+        elif (not self.gyro3drift and self.gyro4drift):
             turnMode = "GYRO3"
-        elif (not self.gyro3Drift and not self.gyro4Drift):
+        elif (not self.gyro3drift and not self.gyro4drift):
             turnMode = "GYRO"
-        
-        print(turnMode)
 
-        # if turnmode == "NO GYRO":
-        #     self.driveBase.turn(degrees)
-        self.driveBase.turn(degrees)
-
-
+    
     def mmToInch(self, mm):
         return mm/25.4
     def inchToMM(self, inch):
