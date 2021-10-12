@@ -7,7 +7,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-from library import FuctionLibrary
+from library import FUNCTION_LIBRARY
 
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
@@ -15,74 +15,19 @@ from library import FuctionLibrary
 
 
 # Create your objects here.
-ev3 = EV3Brick()
-motorA = Motor(Port.A)
+leftMotor = Motor(Port.B)
+rightMotor = Motor(Port.C)
+mediumMotorA = Motor(Port.A)
+mediumMotorD = Motor(Port.D)
 
-left_motor = Motor(Port.B)
-right_motor = Motor(Port.C)
+colorSensor1 = ColorSensor(Port.S1)
+colorSensor2 = ColorSensor(Port.S2)
+
+gyro3 = GyroSensor(Port.S3)
+gyro4 = GyroSensor(Port.S4)
 
 # Initialize the drive base.
-robot = DriveBase(left_motor, right_motor, wheel_diameter=55.5, axle_track=104)
+robot = DriveBase(leftMotor, rightMotor, wheel_diameter=55.5, axle_track=104)
+library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-# Calibrate your drive base.
-# You can also just measure everything
-
-# This should drive 100 mm straight forward.
-# If it doesn't go far enough, decrease your wheel_diameter.
-# If it goes too far, increase your wheel diameter.
-# When it is perfect, comment this code out.
-#robot.straight(100)
-
-# This should turn 360 degrees.
-# If it turns less than 360 degrees, increase the axle_track
-# If it turns more than 360 degrees, decrease the axle_track
-# When it is perfect, comment this code out.
-#robot.turn(360)
-
-# Go forward and backwards for one meter.
-#robot.straight(1000)
-# robot.drive(speed=150, turn_rate=60)
-# wait(1000)
-# robot.stop()
-ev3.speaker.beep()
-ev3.speaker.play_file(SoundFile.HELLO)
-ev3.speaker.say("I can say anything!")
-ev3.speaker.play_notes(['C4/4', 'G4/4'])
-ev3.screen.draw_text(50, 60, "Hello!")
-wait(1000)
-
-# Calibrate your drive base.
-# You can also just measure everything
-
-# This should drive 100 mm straight forward.
-# If it doesn't go far enough, decrease your wheel_diameter.
-# If it goes too far, increase your wheel diameter.
-# When it is perfect, comment this code out.
-#robot.straight(100)
-
-# This should turn 360 degrees.
-# If it turns less than 360 degrees, increase the axle_track
-# If it turns more than 360 degrees, decrease the axle_track
-# When it is perfect, comment this code out.
-#robot.turn(360)
-
-# Go forward and backwards for one meter.
-#robot.straight(1000)
-# robot.drive(speed=150, turn_rate=60)
-# wait(1000)
-# robot.stop()
-#ev3.speaker.beep()
-#ev3.speaker.play_file(SoundFile.HELLO)
-#ev3.speaker.say("Logic error, error error error error error error error error error error errorrr Non halting program detected, shutting down")
-#ev3.speaker.play_notes(['C4/4', 'F3/4', 'F2/4'])
-
-#library.shutDown()
-
-#ev3.screen.draw_text(50, 60, "Hello!")
-#wait(1000)
-
-#use the library
-
-#library.line_follow_for_time(p=2, sensor=sensor_b)
-
-# library.shutdown()
+library.lineFollowUntilShade(shade=90)
