@@ -4,7 +4,7 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
+from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 from time import sleep
 
 from math import *
@@ -75,15 +75,20 @@ class FUNCTION_LIBRARY:
         whiteDone = False
 
         print("old black: " + str(self.black) + ", old white: " + str(self.white))
+        self.hub.screen.load_image(Image('GUI/ColorCalibrateNone.PNG'))
         while True:
             if Button.LEFT in self.hub.buttons.pressed() and not blackDone:
                 self.black = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
+                if (whiteDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
+                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateBlack.PNG'))
                 blackDone = True
 
             if Button.RIGHT in self.hub.buttons.pressed() and not whiteDone:
                 self.white = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
+                if (blackDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
+                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateWhite.PNG'))
                 whiteDone = True
-            
+                
             if blackDone and whiteDone:
                 sleep(1)
                 break

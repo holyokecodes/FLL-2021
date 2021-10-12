@@ -49,8 +49,8 @@ robot = DriveBase(leftMotor, rightMotor, wheel_diameter=57.15, axle_track=115)
 # init the library
 library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 library.calibrate()
+ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 
 while True:
     buttons = ev3.buttons.pressed()
