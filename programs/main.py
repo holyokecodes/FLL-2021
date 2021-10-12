@@ -24,6 +24,17 @@ from comboFour import comboFour
 ev3 = EV3Brick()
 #motorA = Motor(Port.A)
 
+#--MOTORS--
+#Left Large Motor: C
+#Right Large Motor: B
+#Left Medium Motor: D
+#Right Medium Motor: A
+#--SENSORS--
+#Left Color Sensor: 1
+#Right Color Sensor: 2
+#Bottom Gyroscope: 3
+#Top Gyroscope: 4
+
 leftMotor = Motor(Port.B)
 rightMotor = Motor(Port.C)
 mediumMotorA = Motor(Port.A)
@@ -44,12 +55,12 @@ except:
     print("Error: Could not find GYROSCOPE of PORT 4")
 
 # Initialize the drive base.
-robot = DriveBase(leftMotor, rightMotor, wheel_diameter=57.15, axle_track=115)
+robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
 
 # init the library
 library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-library.calibrate()
+# library.calibrate()
 ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 
 while True:

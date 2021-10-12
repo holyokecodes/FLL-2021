@@ -192,7 +192,6 @@ class FUNCTION_LIBRARY:
         turnMode = ""
         if (self.gyro3Drift and self.gyro4Drift):
             turnMode = "NO GYRO"
-            self.driveBase.turn(degrees)
         elif (self.gyro3Drift and not self.gyro4Drift):
             turnMode = "GYRO4"
         elif (not self.gyro3Drift and self.gyro4Drift):
@@ -201,6 +200,10 @@ class FUNCTION_LIBRARY:
             turnMode = "GYRO"
         
         print(turnMode)
+
+        # if turnmode == "NO GYRO":
+        #     self.driveBase.turn(degrees)
+        self.driveBase.turn(degrees)
 
 
     def mmToInch(self, mm):
