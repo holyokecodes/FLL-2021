@@ -4,7 +4,8 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
+from pybricks.media.ev3dev import Image, SoundFile, ImageFile
+from time import sleep
 
 from math import *
 
@@ -44,29 +45,56 @@ class FUNCTION_LIBRARY:
     #PURPOSE: Calibrates Gyroscopes
     #PARAMS: None
     def checkGyroscopes(self):
-        self.gyroscope3.resetAngle(0)
-        self.gyroscope4.resetAngle(0)
-        self.robot.sleep(1)
-        self.gyro3Drift = self.gyroscope3.angle != 0
-        self.gyro4Drift = self.gyroscope4.angle != 0
+        if self.gyroscope3 != -1: self.gyroscope3.reset_angle(0)
+        if self.gyroscope4 != -1: self.gyroscope4.reset_angle(0)
+
+        try: print("Gyro 3 Angle First: " + str(self.gyroscope3.angle()))
+        except: print("Gyro 3 Angle First: [Error]")
+        try: print("Gyro 4 Angle First: " + str(self.gyroscope4.angle()))
+        except: print("Gyro 4 Angle First: [Error]")
+
+        sleep(1)
+
+        try: print("Gyro 3 Angle Second: " + str(self.gyroscope3.angle()))
+        except: print("Gyro 3 Angle Second: [Error]")
+        try: print("Gyro 4 Angle Second: " + str(self.gyroscope4.angle()))
+        except: print("Gyro 4 Angle Second: [Error]")
+
+        if self.gyroscope3 != -1: self.gyro3Drift = (self.gyroscope3.angle() != 0)
+        else: self.gyro3Drift = True
+
+        if self.gyroscope4 != -1: self.gyro4Drift = (self.gyroscope4.angle() != 0)
+        else: self.gyro4Drift = True
+
+        print("Gyro 3 Drift: " + str(self.gyro3Drift))
+        print("Gyro 4 Drift: " + str(self.gyro4Drift))
     
     #PURPOSE: Calibrates Color Sensors
     #PARAMS: None
     def callibrateColors(self):
-        numbersDone = 0
-        print("old black: " + self.black + ", old white: " + self.white)
-        while True:
-            if Button.LEFT in self.hub.buttons.pressed():
-                self.black = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                numbersDone += 1
+        blackDone = False
+        whiteDone = False
 
-            if Button.RIGHT in self.hub.buttons.pressed():
+        print("old black: " + str(self.black) + ", old white: " + str(self.white))
+        self.hub.screen.load_image(Image('GUI/ColorCalibrateNone.PNG'))
+        while True:
+            if Button.LEFT in self.hub.buttons.pressed() and not blackDone:
+                self.black = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
+                if (whiteDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
+                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateBlack.PNG'))
+                blackDone = True
+
+            if Button.RIGHT in self.hub.buttons.pressed() and not whiteDone:
                 self.white = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                numbersDone += 1
-            
-            if numbersDone == 2:
+                if (blackDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
+                else: self.hub.screen.load_image(Image('GUI/ColorCalibrateWhite.PNG'))
+                whiteDone = True
+                
+            if blackDone and whiteDone:
+                sleep(1)
                 break
-        print("new black: " + self.black + ", new white: " + self.white)
+
+        print("new black: " + str(self.black) + ", new white: " + str(self.white))
 
     #PURPOSE: Line follows until it finds a certain shade of B&W (0 is black, 100 is white)
     #PARAMS: 
@@ -171,14 +199,19 @@ class FUNCTION_LIBRARY:
     def turn(self, degrees, speed=100):
         turnMode = ""
         if (self.gyro3drift and self.gyro4drift):
-            turn(degrees)
+            turnMode = "No GYRO"
         elif (self.gyro3drift and not self.gyro4drift):
             turnMode = "GYRO4"
         elif (not self.gyro3drift and self.gyro4drift):
             turnMode = "GYRO3"
         elif (not self.gyro3drift and not self.gyro4drift):
             turnMode = "GYRO"
+        
+        print(turnMode)
 
+        # if turnmode == "NO GYRO":
+        #     self.driveBase.turn(degrees)
+        self.driveBase.turn(degrees)
     
     def mmToInch(self, mm):
         return mm/25.4
