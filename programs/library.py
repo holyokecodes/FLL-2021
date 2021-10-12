@@ -5,6 +5,7 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
+from time import sleep
 
 from math import *
 
@@ -45,27 +46,49 @@ class FUNCTION_LIBRARY:
         self.calibrateColors()
     
     def checkGyroscopes(self):
-        self.gyroscope3.resetAngle(0)
-        self.gyroscope4.resetAngle(0)
-        self.robot.sleep(1)
-        self.gyro3Drift = self.gyroscope3.angle != 0
-        self.gyro4Drift = self.gyroscope4.angle != 0
+        if self.gyroscope3 != -1: self.gyroscope3.reset_angle(0)
+        if self.gyroscope4 != -1: self.gyroscope4.reset_angle(0)
 
-    def callibrateColors(self):
-        numbersDone = 0
-        print("old black: " + self.black + ", old white: " + self.white)
+        try: print("Gyro 3 Angle First: " + str(self.gyroscope3.angle()))
+        except: print("Gyro 3 Angle First: [Error]")
+        try: print("Gyro 4 Angle First: " + str(self.gyroscope4.angle()))
+        except: print("Gyro 4 Angle First: [Error]")
+
+        sleep(1)
+
+        try: print("Gyro 3 Angle Second: " + str(self.gyroscope3.angle()))
+        except: print("Gyro 3 Angle Second: [Error]")
+        try: print("Gyro 4 Angle Second: " + str(self.gyroscope4.angle()))
+        except: print("Gyro 4 Angle Second: [Error]")
+
+        if self.gyroscope3 != -1: self.gyro3Drift = (self.gyroscope3.angle() != 0)
+        else: self.gyro3Drift = True
+
+        if self.gyroscope4 != -1: self.gyro4Drift = (self.gyroscope4.angle() != 0)
+        else: self.gyro4Drift = True
+
+        print("Gyro 3 Drift: " + str(self.gyro3Drift))
+        print("Gyro 4 Drift: " + str(self.gyro4Drift))
+
+    def calibrateColors(self):
+        blackDone = False
+        whiteDone = False
+
+        print("old black: " + str(self.black) + ", old white: " + str(self.white))
         while True:
-            if Button.LEFT in self.hub.buttons.pressed():
+            if Button.LEFT in self.hub.buttons.pressed() and not blackDone:
                 self.black = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                numbersDone += 1
+                blackDone = True
 
-            if Button.RIGHT in self.hub.buttons.pressed():
+            if Button.RIGHT in self.hub.buttons.pressed() and not whiteDone:
                 self.white = (self.colorSensor1.reflection() + self.colorSensor2.reflection()) / 2
-                numbersDone += 1
+                whiteDone = True
             
-            if numbersDone == 2:
+            if blackDone and whiteDone:
+                sleep(1)
                 break
-        print("new black: " + self.black + ", new white: " + self.white)
+
+        print("new black: " + str(self.black) + ", new white: " + str(self.white))
 
     def lineFollowUntilBlack(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, sensor_stop=-1,  debug=False):
         if (sensor_lf == -1):
@@ -163,7 +186,7 @@ class FUNCTION_LIBRARY:
     def turn(self, degrees, speed=100):
         turnMode = ""
         if (self.gyro3drift and self.gyro4drift):
-            turn(degrees)
+            self.driveBase.turn(degrees)
         elif (self.gyro3drift and not self.gyro4drift):
             turnMode = "GYRO4"
         elif (not self.gyro3drift and self.gyro4drift):

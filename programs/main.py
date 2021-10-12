@@ -11,10 +11,10 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 from library import FUNCTION_LIBRARY
 
 #import the combos
-from comboOne import *
-from comboTwo import *
-from comboThree import *
-from comboFour import *
+# from comboOne import *
+# from comboTwo import *
+# from comboThree import *
+# from comboFour import *
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # For more information:
@@ -24,26 +24,38 @@ from comboFour import *
 ev3 = EV3Brick()
 #motorA = Motor(Port.A)
 
-left_motor = Motor(Port.B)
-right_motor = Motor(Port.C)
-medium_motor = Motor(Port.D)
+leftMotor = Motor(Port.B)
+rightMotor = Motor(Port.C)
+mediumMotorA = Motor(Port.A)
+mediumMotorD = Motor(Port.D)
 
-sensor_b = ColorSensor(Port.S2)
-sensor_stop = ColorSensor(Port.S1)
+colorSensor1 = ColorSensor(Port.S1)
+colorSensor2 = ColorSensor(Port.S2)
+
+try:
+    gyro3 = GyroSensor(Port.S3)
+except:
+    gyro3 = -1
+    print("Error: Could not find GYROSCOPE of PORT 3")
+try:
+    gyro4 = GyroSensor(Port.S4)
+except:
+    gyro4 = -1
+    print("Error: Could not find GYROSCOPE of PORT 4")
 
 # Initialize the drive base.
-robot = DriveBase(left_motor, right_motor, wheel_diameter=57.15, axle_track=115)
+robot = DriveBase(leftMotor, rightMotor, wheel_diameter=57.15, axle_track=115)
 
 # init the library
-library = FUNCTION_LIBRARY(robot, ev3, left_motor, right_motor, medium_motor, sensor_b, sensor_stop)
+library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-ev3.screen.load_image(Image('../images/FLLButtons.PNG'))
+ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 library.calibrate()
 
 while True:
     buttons = ev3.buttons.pressed()
     if Button.LEFT in ev3.buttons.pressed():
-        comboOne(robot, ev3, library, left_motor, medium_motor, buttons)#, sensor_b, sensor_stop)
+        comboOne(robot, ev3, library, leftMotor, medium_motor, buttons)#, sensor_b, sensor_stop)
     if Button.RIGHT in ev3.buttons.pressed():
         comboTwo(robot, ev3, library, medium_motor, sensor_b, sensor_stop)
     if Button.UP in ev3.buttons.pressed():
