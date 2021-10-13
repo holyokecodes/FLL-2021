@@ -6,9 +6,6 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
-from time import sleep
 
 def comboOne(library):
-    library.driveBase.drive(-10000, 0)
-    sleep(2)
-    library.driveBase.stop()
+    library.turn(90)
