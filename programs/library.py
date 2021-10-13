@@ -71,7 +71,7 @@ class FUNCTION_LIBRARY:
     
     #PURPOSE: Calibrates Color Sensors
     #PARAMS: None
-    def callibrateColors(self):
+    def calibrateColors(self):
         blackDone = False
         whiteDone = False
 
@@ -198,13 +198,13 @@ class FUNCTION_LIBRARY:
     #speed: The speed the robot turns at in mm/s.
     def turn(self, degrees, speed=100):
         turnMode = ""
-        if (self.gyro3drift and self.gyro4drift):
+        if (self.gyro3Drift and self.gyro4Drift):
             turnMode = "No GYRO"
-        elif (self.gyro3drift and not self.gyro4drift):
+        elif (self.gyro3Drift and not self.gyro4Drift):
             turnMode = "GYRO4"
-        elif (not self.gyro3drift and self.gyro4drift):
+        elif (not self.gyro3Drift and self.gyro4Drift):
             turnMode = "GYRO3"
-        elif (not self.gyro3drift and not self.gyro4drift):
+        elif (not self.gyro3Drift and not self.gyro4Drift):
             turnMode = "GYRO"
         
         print(turnMode)
