@@ -71,7 +71,7 @@ class FUNCTION_LIBRARY:
     
     #PURPOSE: Calibrates Color Sensors
     #PARAMS: None
-    def callibrateColors(self):
+    def calibrateColors(self):
         blackDone = False
         whiteDone = False
 
@@ -198,20 +198,29 @@ class FUNCTION_LIBRARY:
     #speed: The speed the robot turns at in mm/s.
     def turn(self, degrees, speed=100):
         turnMode = ""
-        if (self.gyro3drift and self.gyro4drift):
-            turnMode = "No GYRO"
-        elif (self.gyro3drift and not self.gyro4drift):
-            turnMode = "GYRO4"
-        elif (not self.gyro3drift and self.gyro4drift):
-            turnMode = "GYRO3"
-        elif (not self.gyro3drift and not self.gyro4drift):
-            turnMode = "GYRO"
-        
-        print(turnMode)
+        if (self.gyro3Drift and self.gyro4Drift):
+            self.driveBase.turn(degrees)
+        elif (self.gyro3Drift and not self.gyro4Drift):
+            self.turnWithGyros(degrees, [self.gyroscope3])
+        elif (not self.gyro3Drift and self.gyro4Drift):
+            self.turnWithGyros(degrees, [self.gyroscope4])
+        elif (not self.gyro3Drift and not self.gyro4Drift):
+            self.turnWithGyros(degrees, [self.gyroscope3, self.gyroscope4])
+    
+    def turnWithGyros(self, amount, gyros):
+        for gyro in gyros:
+            gyro.reset_angle(0)
 
-        # if turnmode == "NO GYRO":
-        #     self.driveBase.turn(degrees)
-        self.driveBase.turn(degrees)
+        while True:
+            self.driveBase.turn(1)
+            sum = 0
+            for gyro in gyros:
+                sum += gyro.angle()
+
+            degrees = sum / gyros.length
+
+            if degrees >= amount:
+                break
     
     def mmToInch(self, mm):
         return mm/25.4
