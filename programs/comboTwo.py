@@ -8,4 +8,21 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboTwo(library):
-    pass
+    #strait
+    robot.straight(library.inchToMM(10))
+    #turn 45 degrees 
+    robot.turn(-45)
+    #strait 
+    robot.straight(library.inchToMM(10))
+    #line follow till bridge
+    #strait again
+    #turn 60 degrees 
+    #strait again
+    #use attachment 
+    #strait again
+    #turn 60 degrees
+    #strait again
+    #line follow till bridge
+    #strait
+    #turn 45 degrees
+    #strait
