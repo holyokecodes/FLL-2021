@@ -1,7 +1,6 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
@@ -53,6 +52,7 @@ try:
 except:
     gyro4 = -1
     print("Error: Could not find GYROSCOPE of PORT 4")
+
 
 # Initialize the drive base.
 robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
