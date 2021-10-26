@@ -9,11 +9,11 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboTwo(library):
     #strait
-    robot.straight(library.inchToMM(10))
+    library.driveBase.straight(library.inchToMM(10))
     #turn 45 degrees 
-    robot.turn(-45)
+    library.driveBase.turn(-45)
     #strait 
-    robot.straight(library.inchToMM(10))
+    library.driveBase.straight(library.inchToMM(10))
     #line follow till bridge
     #strait again
     #turn 60 degrees 
