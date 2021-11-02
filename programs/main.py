@@ -56,11 +56,11 @@ except:
 
 # Initialize the drive base.
 robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
-
+ 
 # init the library
 library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
 
-library.calibrate()
+# library.calibrate()
 ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 
 while True:

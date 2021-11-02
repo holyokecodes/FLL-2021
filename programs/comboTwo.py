@@ -9,12 +9,13 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboTwo(library):
     #strait
-    library.driveBase.straight(library.inchToMM(10))
+    library.driveBase.straight(library.inchToMM(6.5))
     #turn 45 degrees 
     library.driveBase.turn(-45)
     #strait 
     library.driveBase.straight(library.inchToMM(10))
     #line follow till bridge
+    library.lineFollowForDistance(distance=library.inchToMM(69.5), sensor_lf=library.colorSensor1)
     #strait again
     #turn 60 degrees 
     #strait again
