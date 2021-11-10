@@ -9,22 +9,26 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 from time import sleep
 
 def comboOne(library):
-    #PSEUDOCODE
-    #Reset motor angle
-    #Drive until stalled
-    #wait x amount of seconds
-    #if motor angle is small:
-    #   it is green
-    #if motor angle is big:
-    #   it is orage
-    #if motor did not stall:
-    #   it is blue
-    #grab blue
-    library.driveBase.drive(100, 0)
-    while True:
-        print("Left: " + str(library.leftDriveMotor.control.stalled()) + " Right: " + str(library.rightDriveMotor.control.stalled()))
-        if library.leftDriveMotor.control.stalled() or library.rightDriveMotor.control.stalled():
-            break
-    library.driveBase.stop()
-
-    pass
+    #left medium depth container: 125mm-150mm
+    #left forward container
+    #left back container
+  
+    #center medium depth container: 139-154mm
+    #center forward container
+    #center back container
+    distance = library.ultrasonicSensor4.distance()
+    if (distance < 150):
+        if (distance > 125):
+            print ("orange")
+        else:
+            print ("green")
+    else:
+        print ("blue")
+    library.driveBase.turn(-25)
+    if (distance < 154):
+        if (distance > 139):
+            print ("orange")
+        else:
+            print ("green")
+    else:
+        print ("blue")

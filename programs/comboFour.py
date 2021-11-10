@@ -6,7 +6,6 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
-from time import sleep
 
 def comboFour(library):
-    sleep(10)
+    library.turn(90, 100)

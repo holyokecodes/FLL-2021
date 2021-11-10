@@ -10,7 +10,7 @@ from time import sleep
 from math import *
 
 class FUNCTION_LIBRARY:
-    def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, gyroscope4):
+    def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, ultrasonicSensor4):
         #self, DriveBase, Hub
         self.driveBase = robot
         self.hub = ev3
@@ -28,7 +28,7 @@ class FUNCTION_LIBRARY:
         self.colorSensor1 = colorSensor1 
         self.colorSensor2 = colorSensor2
         self.gyroscope3 = gyroscope3
-        self.gyroscope4 = gyroscope4
+        self.ultrasonicSensor4 = ultrasonicSensor4
 
         self.black = 9
         self.white = 85
@@ -46,28 +46,19 @@ class FUNCTION_LIBRARY:
     #PARAMS: None
     def checkGyroscopes(self):
         if self.gyroscope3 != -1: self.gyroscope3.reset_angle(0)
-        if self.gyroscope4 != -1: self.gyroscope4.reset_angle(0)
 
         try: print("Gyro 3 Angle First: " + str(self.gyroscope3.angle()))
         except: print("Gyro 3 Angle First: [Error]")
-        try: print("Gyro 4 Angle First: " + str(self.gyroscope4.angle()))
-        except: print("Gyro 4 Angle First: [Error]")
 
         sleep(1)
 
         try: print("Gyro 3 Angle Second: " + str(self.gyroscope3.angle()))
         except: print("Gyro 3 Angle Second: [Error]")
-        try: print("Gyro 4 Angle Second: " + str(self.gyroscope4.angle()))
-        except: print("Gyro 4 Angle Second: [Error]")
 
         if self.gyroscope3 != -1: self.gyro3Drift = (self.gyroscope3.angle() != 0)
         else: self.gyro3Drift = True
 
-        if self.gyroscope4 != -1: self.gyro4Drift = (self.gyroscope4.angle() != 0)
-        else: self.gyro4Drift = True
-
         print("Gyro 3 Drift: " + str(self.gyro3Drift))
-        print("Gyro 4 Drift: " + str(self.gyro4Drift))
     
     #PURPOSE: Calibrates Color Sensors
     #PARAMS: None
@@ -89,6 +80,9 @@ class FUNCTION_LIBRARY:
                 if (blackDone): self.hub.screen.load_image(Image('GUI/ColorCalibrateBoth.PNG'))
                 else: self.hub.screen.load_image(Image('GUI/ColorCalibrateWhite.PNG'))
                 whiteDone = True
+              
+            if Button.CENTER in self.hub.buttons.pressed() and not whiteDone:
+                break
                 
             if blackDone and whiteDone:
                 sleep(1)
@@ -198,29 +192,17 @@ class FUNCTION_LIBRARY:
     #speed: The speed the robot turns at in mm/s.
     def turn(self, degrees, speed=100):
         turnMode = ""
-        if (self.gyro3Drift and self.gyro4Drift):
+        if (self.gyro3Drift):
             self.driveBase.turn(degrees)
-        elif (self.gyro3Drift and not self.gyro4Drift):
-            self.turnWithGyros(degrees, [self.gyroscope3])
-        elif (not self.gyro3Drift and self.gyro4Drift):
-            self.turnWithGyros(degrees, [self.gyroscope4])
-        elif (not self.gyro3Drift and not self.gyro4Drift):
-            self.turnWithGyros(degrees, [self.gyroscope3, self.gyroscope4])
-    
-    def turnWithGyros(self, amount, gyros):
-        for gyro in gyros:
-            gyro.reset_angle(0)
+        elif (not self.gyro3Drift):
+            self.gyroscope3.reset_angle(0)
 
-        while True:
-            self.driveBase.turn(1)
-            sum = 0
-            for gyro in gyros:
-                sum += gyro.angle()
+            self.driveBase.drive(0, 5)
+            while True:
+                if degrees >= self.gyroscope3.angle():
+                    break
 
-            degrees = sum / gyros.length
-
-            if degrees >= amount:
-                break
+            self.driveBase.stop()
     
     def mmToInch(self, mm):
         return mm/25.4
