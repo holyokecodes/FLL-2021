@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+                                 UltrasonicSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
@@ -35,8 +35,8 @@ ev3 = EV3Brick()
 #Bottom Gyroscope: 3
 #Top Gyroscope: 4
 
-leftMotor = Motor(Port.B)
-rightMotor = Motor(Port.C)
+leftMotor = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
+rightMotor = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
 mediumMotorA = Motor(Port.A)
 mediumMotorD = Motor(Port.D)
 
@@ -48,19 +48,16 @@ try:
 except:
     gyro3 = -1
     print("Error: Could not find GYROSCOPE of PORT 3")
-try:
-    gyro4 = GyroSensor(Port.S4)
-except:
-    gyro4 = -1
-    print("Error: Could not find GYROSCOPE of PORT 4")
+
+ultrasonicSensor4 = UltrasonicSensor(Port.S4)
 
 # Initialize the drive base.
 robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
  
 # init the library
-library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, gyro4)
+library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorD, mediumMotorA, colorSensor1, colorSensor2, gyro3, ultrasonicSensor4)
 
-# library.calibrate()
+library.calibrate()
 ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 
 while True:
