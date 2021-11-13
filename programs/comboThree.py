@@ -8,4 +8,11 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboThree(library):
-    pass
+    library.driveBase.straight(500)
+    library.turn(-85)
+    library.driveBase.straight(200)
+    library.driveBase.straight(-200)
+    library.turn(85)
+    library.driveBase.straight(120)
+    library.turn(-44)
+    library.driveBase.straight(100)
