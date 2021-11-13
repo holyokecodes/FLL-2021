@@ -9,4 +9,5 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 from time import sleep
 
 def comboFour(library):
-    sleep(10)
+    while True:
+        print(library.colorSensor1.reflection())

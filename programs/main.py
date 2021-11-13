@@ -30,8 +30,8 @@ ev3 = EV3Brick()
 #Left Medium Motor: D
 #Right Medium Motor: A
 #--SENSORS--
-#Left Color Sensor: 1
-#Right Color Sensor: 2
+#Left Color Sensor: 2
+#Right Color Sensor: 1
 #Bottom Gyroscope: 3
 #Top Gyroscope: 4
 

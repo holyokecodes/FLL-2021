@@ -11,17 +11,18 @@ def comboTwo(library):
     #strait
     library.driveBase.straight(library.inchToMM(6.5))
     #turn 45 degrees 
-    library.driveBase.turn(40)
+    library.turn(40)
     #strait 
     library.driveBase.straight(library.inchToMM(10))
     #line follow till bridge
-    library.lineFollowForDistance(distance=library.inchToMM(63), sensor_lf=library.colorSensor1,DRIVE_SPEED=130,p=-1.3)
+    library.lineFollowForDistance(distance=library.inchToMM(61),DRIVE_SPEED=170,p=-.9,sensor_lf=library.colorSensor1)
     #strait again
     library.driveBase.drive(library.inchToMM(3.5),22)
     wait(2000)
     library.driveBase.stop()
-    library.driveBase.turn(120)
-    library.lineFollowForDistance(distance=library.inchToMM(12), DRIVE_SPEED=130,p=1.7)
+    library.turn(120)
+    library.lineFollowForDistance(distance=library.inchToMM(6),DRIVE_SPEED=170,p=-.9,sensor_lf=library.colorSensor1)
+    library.lineFollowUntilShade(SHADE=17,sensor_lf=library.colorSensor2, DRIVE_SPEED=130,p=-.9)
 
     #turn 60 degrees 
     #strait again
