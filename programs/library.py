@@ -197,12 +197,15 @@ class FUNCTION_LIBRARY:
         elif (not self.gyro3Drift):
             self.gyroscope3.reset_angle(0)
 
-            self.driveBase.drive(0, 5)
+            self.driveBase.drive(0, speed)
             while True:
                 if degrees >= self.gyroscope3.angle():
                     break
 
             self.driveBase.stop()
+
+    def straight(self, dist):
+        self.driveBase.straight(-dist)
     
     def mmToInch(self, mm):
         return mm/25.4

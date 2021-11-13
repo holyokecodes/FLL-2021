@@ -55,7 +55,7 @@ ultrasonicSensor4 = UltrasonicSensor(Port.S4)
 robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
 
 # init the library
-library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorA, mediumMotorD, colorSensor1, colorSensor2, gyro3, ultrasonicSensor4)
+library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorD, mediumMotorA, colorSensor1, colorSensor2, gyro3, ultrasonicSensor4)
 
 library.calibrate()
 ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
