@@ -203,9 +203,6 @@ class FUNCTION_LIBRARY:
                     break
 
             self.driveBase.stop()
-
-    def straight(self, dist):
-        self.driveBase.straight(-dist)
     
     def mmToInch(self, mm):
         return mm/25.4

@@ -35,8 +35,8 @@ ev3 = EV3Brick()
 #Bottom Gyroscope: 3
 #Top Gyroscope: 4
 
-leftMotor = Motor(Port.B)
-rightMotor = Motor(Port.C)
+leftMotor = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
+rightMotor = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
 mediumMotorA = Motor(Port.A)
 mediumMotorD = Motor(Port.D)
 
