@@ -1,19 +1,11 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import Image, SoundFile, ImageFile
-
+from pybricks.tools import wait
 def comboTwo(library):
-    #strait
+    #Go up to the line to line follow
     library.driveBase.straight(library.inchToMM(6.5))
-    #turn 45 degrees 
-    library.turn(40)
-    #strait 
-    library.driveBase.straight(library.inchToMM(10))
+    library.turn(40) 
+    library.driveBase.straight(library.inchToMM(10)) 
+
     #line follow till bridge
     library.lineFollowForDistance(distance=library.inchToMM(61),DRIVE_SPEED=170,p=-.9,sensor_lf=library.colorSensor1)
     #strait again

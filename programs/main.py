@@ -1,20 +1,18 @@
 #!/usr/bin/env pybricks-micropython
+from pybricks.ev3devices import (ColorSensor, GyroSensor, Motor,
+                                 UltrasonicSensor)
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 UltrasonicSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
+from pybricks.media.ev3dev import Image
+from pybricks.parameters import Button, Direction, Port
 from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
-#import the library
-from library import FUNCTION_LIBRARY
-
+from comboFour import comboFour
 #import the combos
 from comboOne import comboOne
-from comboTwo import comboTwo
 from comboThree import comboThree
-from comboFour import comboFour
+from comboTwo import comboTwo
+#import the library
+from library import FUNCTION_LIBRARY
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # For more information:
@@ -22,7 +20,6 @@ from comboFour import comboFour
 
 # Create your objects here.
 ev3 = EV3Brick()
-#motorA = Motor(Port.A)
 
 #--MOTORS--
 #Left Large Motor: C
@@ -32,27 +29,60 @@ ev3 = EV3Brick()
 #--SENSORS--
 #Left Color Sensor: 2
 #Right Color Sensor: 1
-#Bottom Gyroscope: 3
-#Top Gyroscope: 4
+#Gyroscope: 3
+#Ultrasonic: 4
 
-leftMotor = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
-rightMotor = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
-mediumMotorA = Motor(Port.A)
-mediumMotorD = Motor(Port.D)
 
-colorSensor1 = ColorSensor(Port.S1)
-colorSensor2 = ColorSensor(Port.S2)
+try:
+    leftMotor = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
+except:
+    leftMotor = None
+    print("Library error: Could not find LEFT LARGE MOTOR on PORT B")
+
+try:
+    rightMotor = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
+except:
+    rightMotor = None
+    print("Library error: Could not find RIGHT LARGE MOTOR on PORT C")
+
+try:
+    mediumMotorA = Motor(Port.A)
+except:
+    mediumMotorA = None
+    print("Library error: Could not find RIGHT MEDIUM MOTOR on PORT A")
+
+try:
+    mediumMotorD = Motor(Port.D)
+except:
+    mediumMotorD = None
+    print("Library error: Could not find RIGHT MEDIUM MOTOR on PORT D")
+
+try:
+    colorSensor1 = ColorSensor(Port.S1)
+except:
+    colorSensor1 = None
+    print("Library error: Could not find COLOR SENSOR on PORT 1")
+
+try:
+    colorSensor2 = ColorSensor(Port.S2)
+except:
+    colorSensor2 = None
+    print("Library error: Could not find COLOR SENSOR on PORT 2")
 
 try:
     gyro3 = GyroSensor(Port.S3)
 except:
-    gyro3 = -1
-    print("Error: Could not find GYROSCOPE of PORT 3")
+    gyro3 = None
+    print("Library error: Could not find GYROSCOPE on PORT 3")
 
-ultrasonicSensor4 = UltrasonicSensor(Port.S4)
+try:
+    ultrasonicSensor4 = UltrasonicSensor(Port.S4)
+except:
+    ultrasonicSensor4 = None
+    print("Library error: Could not find ULTRASONIC SENSOR on PORT 4")
 
 # Initialize the drive base.
-robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=200)
+robot = DriveBase(leftMotor, rightMotor, wheel_diameter=60, axle_track=165)
  
 # init the library
 library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorD, mediumMotorA, colorSensor1, colorSensor2, gyro3, ultrasonicSensor4)

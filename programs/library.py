@@ -1,13 +1,11 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor, InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import Image, SoundFile, ImageFile
+from math import *
 from time import sleep
 
-from math import *
+from pybricks.media.ev3dev import Image
+from pybricks.parameters import Button
+from pybricks.tools import StopWatch
+
 
 class FUNCTION_LIBRARY:
     def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, ultrasonicSensor4):
@@ -34,7 +32,6 @@ class FUNCTION_LIBRARY:
         self.white = 85
 
         self.gyro3Drift = False
-        self.gyro4Drift = False
 
     #PURPOSE: Calibrates robot
     #PARAMS: None
@@ -103,9 +100,9 @@ class FUNCTION_LIBRARY:
 
     def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, SHADE=-1, sensor_lf=-1, sensor_stop=-1,  debug=False):
         if (sensor_lf == -1):
-            sensor_lf = self.colorSensor1
+            sensor_lf = self.colorSensor2
         if (sensor_stop == -1):
-            sensor_stop = self.colorSensor2 
+            sensor_stop = self.colorSensor1 
         if (SHADE == -1):
             print("ERROR: Please define the shade that you'll be using.")
         PROPORTIONAL_GAIN = p
@@ -118,7 +115,7 @@ class FUNCTION_LIBRARY:
             self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
             
             #stop condition 
-            if sensor_stop.reflection() <= SHADE: 
+            if sensor_stop.reflection() == SHADE: 
                 self.driveBase.stop()
                 break
 
@@ -192,9 +189,9 @@ class FUNCTION_LIBRARY:
     #speed: The speed the robot turns at in mm/s.
     def turn(self, degrees, speed=100):
         turnMode = ""
-        if (self.gyro3Drift):
-            self.driveBase.turn(degrees)
-        elif (not self.gyro3Drift):
+        #if (self.gyro3Drift):
+        self.driveBase.turn(degrees)
+        """elif (not self.gyro3Drift):
             self.gyroscope3.reset_angle(0)
 
             self.driveBase.drive(0, speed)
@@ -202,7 +199,7 @@ class FUNCTION_LIBRARY:
                 if degrees >= self.gyroscope3.angle():
                     break
 
-            self.driveBase.stop()
+            self.driveBase.stop()"""
     
     def mmToInch(self, mm):
         return mm/25.4
