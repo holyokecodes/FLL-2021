@@ -8,5 +8,4 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboFour(library):
-    while True:
-        print(library.colorSensor1.reflection())
+    print("HEY! STOP RUNNING ME !!!1!")

@@ -98,13 +98,15 @@ class FUNCTION_LIBRARY:
     #sensor_stop: Sensor to determine when to stop.
     #debug: Turns on print statements to see what the sensor_lf is seeing.
 
-    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, SHADE=-1, sensor_lf=None, sensor_stop=-1,  debug=False):
+    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, SHADE=None, sensor_lf=None, sensor_stop=None,  debug=False):
         if (sensor_lf == None):
             sensor_lf = self.colorSensor2
-        if (SHADE == -1):
+        if (sensor_stop == None):
+            sensor_stop = self.colorSensor1
+        if (SHADE == None):
             print("ERROR: Please define the shade that you'll be using.")
         PROPORTIONAL_GAIN = p
-        threshold = (self.black + self.white) / 2 #the average/mean of black+white
+        threshold = ((self.white - self.black)*0.7) #the average/mean of black+white
 
         while True: #forever, do
             if (debug):
@@ -112,8 +114,9 @@ class FUNCTION_LIBRARY:
             #Calculate the turn rate from the devation and set the drive base speed and turn rate.
             self.driveBase.drive(DRIVE_SPEED, PROPORTIONAL_GAIN * (sensor_lf.reflection() - threshold))
             
-            #stop condition 
-            if sensor_stop.reflection() == SHADE: 
+            #stop condition
+            print(sensor_stop.reflection())
+            if abs(sensor_stop.reflection() - SHADE) <= 3: 
                 self.driveBase.stop()
                 break
 
@@ -135,7 +138,7 @@ class FUNCTION_LIBRARY:
         PROPORTIONAL_GAIN = p
         #BLACK = 9 #what is black
         #WHITE = 85 #what is white, also what is life (42)
-        threshold = (self.black + self.white) / 2 #the center of black+white
+        threshold = ((self.white - self.black)*0.7) #the center of black+white
 
         while True: #forever, do
 
@@ -193,7 +196,8 @@ class FUNCTION_LIBRARY:
 
             self.driveBase.drive(0, speed)
             while True:
-                if degrees >= self.gyroscope3.angle():
+                #print(self.gyroscope3.angle())
+                if self.gyroscope3.angle()<= -degrees:
                     break
 
             self.driveBase.stop()
