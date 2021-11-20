@@ -13,8 +13,10 @@ def comboThree(library):
     library.driveBase.straight(200)
     library.driveBase.straight(-200)
     library.turn(75)
-    library.driveBase.straight(185)
-    library.turn(25)
-    # library.driveBase.
+    library.driveBase.straight(200)
+    library.turn(30)
+    library.driveBase.straight(250)
+    library.turn(40)
+    library.driveBase.straight(35)
 
     #library.rightAttachment.run_time(-150,8000)
