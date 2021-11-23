@@ -15,6 +15,8 @@ def comboOne(library):
     #center medium depth container: 139-154mm
     #center forward container
     #center back container
+    library.turn(90)
+    library.turn(-90)
     library.leftAttachment.run_until_stalled(-200)
     wait(500)
     distance = library.ultrasonicSensor4.distance()
