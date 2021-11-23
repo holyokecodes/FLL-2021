@@ -196,7 +196,7 @@ class FUNCTION_LIBRARY:
             else:
                 self.driveBase.drive(0, speed)
             while True:
-                if degrees - precision < self.gyroscope3.angle() < degrees + precision:
+                if abs(degrees) - abs(self.gyroscope3.angle()) <= precision:
                     break
 
             self.driveBase.stop()
