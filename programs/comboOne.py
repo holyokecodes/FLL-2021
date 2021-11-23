@@ -24,9 +24,13 @@ def comboOne(library):
         else:
             print ("green: " + str(distance))
         while True:
+            library.rightAttachment.reset_angle(0)
+            library.rightAttachment.run_target(100, 100)
             library.turn(90, 200) 
             library.driveBase.straight(-115)
             library.turn(-90, 200)
+            library.leftAttachment.reset_angle(0)
+            library.leftAttachment.run_target(100, -120)
             distance = library.ultrasonicSensor4.distance()
             if (distance < 150):
                 if (distance > 125):
@@ -38,5 +42,7 @@ def comboOne(library):
                 break
     else:
         print ("blue: " + str(distance))
+    
+    library.driveBase.straight(100)
     library.leftAttachment.reset_angle(0)
-    library.leftAttachment.run_target(100, 10)
+    library.leftAttachment.run_target(100, 160)
