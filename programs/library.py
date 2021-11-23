@@ -188,17 +188,19 @@ class FUNCTION_LIBRARY:
     #PARAMS:
     #degrees: The number of degrees the robot turned.
     #speed: The speed the robot turns at in mm/s.
-    def turn(self, degrees, speed=100):
+    def turn(self, degrees, speed=100, precision=2):
         turnMode = ""
         if (self.gyro3Drift):
             self.driveBase.turn(degrees)
         elif (not self.gyro3Drift):
             self.gyroscope3.reset_angle(0)
 
-            self.driveBase.drive(0, speed)
+            if degrees < 0:
+                self.driveBase.drive(0, -speed)
+            else:
+                self.driveBase.drive(0, speed)
             while True:
-                #print(self.gyroscope3.angle())
-                if self.gyroscope3.angle()<= -degrees:
+                if abs(degrees) - abs(self.gyroscope3.angle()) <= precision:
                     break
 
             self.driveBase.stop()
