@@ -7,6 +7,7 @@ from pybricks.parameters import Button
 from pybricks.tools import StopWatch
 
 
+
 class FUNCTION_LIBRARY:
     def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, ultrasonicSensor4):
         #self, DriveBase, Hub
@@ -98,7 +99,7 @@ class FUNCTION_LIBRARY:
     #sensor_stop: Sensor to determine when to stop.
     #debug: Turns on print statements to see what the sensor_lf is seeing.
 
-    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, SHADE=None, sensor_lf=None, sensor_stop=None,  debug=False):
+    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, SHADE=None, sensor_lf=None, sensor_stop=None, tolerance=3, debug=False):
         if (sensor_lf == None):
             sensor_lf = self.colorSensor2
         if (sensor_stop == None):
@@ -116,7 +117,7 @@ class FUNCTION_LIBRARY:
             
             #stop condition
             print(sensor_stop.reflection())
-            if abs(sensor_stop.reflection() - SHADE) <= 3: 
+            if abs(sensor_stop.reflection() - SHADE) <= tolerance: 
                 self.driveBase.stop()
                 break
 

@@ -16,8 +16,9 @@ def comboTwo(library):
     wait(2000)
     library.driveBase.stop()
     library.turn(85)
-    library.lineFollowForDistance(distance=library.inchToMM(8),p=.9)
-    library.lineFollowUntilShade(SHADE=17,p=1.25)
+    library.lineFollowForDistance(distance=library.inchToMM(8),p=-.9)
+    library.lineFollowUntilShade(SHADE=17,p=-.9, tolerance=1)
+    library.lineFollowForDistance(distance=library.inchToMM(2),p=-.9)
     
     #turn 60 degrees 
     #strait again
