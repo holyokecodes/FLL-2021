@@ -87,26 +87,13 @@ robot = DriveBase(leftMotor, rightMotor, wheel_diameter=50, axle_track=115)
 # init the library
 library = FUNCTION_LIBRARY(robot, ev3, leftMotor, rightMotor, mediumMotorD, mediumMotorA, colorSensor1, colorSensor2, gyro3, ultrasonicSensor4)
 
-library.calibrate()
-ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
-
 while True:
-    buttons = ev3.buttons.pressed()
-    if Button.LEFT in ev3.buttons.pressed():
-        ev3.screen.load_image(Image('GUI/ComboOne.PNG'))
-        comboOne(library)
-
-    if Button.RIGHT in ev3.buttons.pressed():
-        ev3.screen.load_image(Image('GUI/ComboTwo.PNG'))
-        comboTwo(library)
-
-    if Button.DOWN in ev3.buttons.pressed():
-        ev3.screen.load_image(Image('GUI/ComboThree.PNG'))
-        comboThree(library)
-
-    if Button.UP in ev3.buttons.pressed():
-        ev3.screen.load_image(Image('GUI/ComboFour.PNG'))
-        comboFour(library)
-    
-    ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
-
+    if Button.CENTER in ev3.buttons.pressed():
+        robot.straight(100)
+        robot.straight(-100)
+        break
+while True:
+    if Button.CENTER in ev3.buttons.pressed():
+        robot.turn(90)
+        robot.turn(-90)
+        break

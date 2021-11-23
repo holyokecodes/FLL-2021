@@ -98,15 +98,13 @@ class FUNCTION_LIBRARY:
     #sensor_stop: Sensor to determine when to stop.
     #debug: Turns on print statements to see what the sensor_lf is seeing.
 
-    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, BLACK=9, WHITE= 85, SHADE=-1, sensor_lf=-1, sensor_stop=-1,  debug=False):
-        if (sensor_lf == -1):
+    def lineFollowUntilShade(self, p=1.2, DRIVE_SPEED=100, SHADE=-1, sensor_lf=None, sensor_stop=-1,  debug=False):
+        if (sensor_lf == None):
             sensor_lf = self.colorSensor2
-        if (sensor_stop == -1):
-            sensor_stop = self.colorSensor1 
         if (SHADE == -1):
             print("ERROR: Please define the shade that you'll be using.")
         PROPORTIONAL_GAIN = p
-        threshold = (BLACK + WHITE) / 2 #the average/mean of black+white
+        threshold = (self.black + self.white) / 2 #the average/mean of black+white
 
         while True: #forever, do
             if (debug):
@@ -128,8 +126,8 @@ class FUNCTION_LIBRARY:
     #sensor_lf: Sensor to line follow with.
     #time: How long the timer should go for in milliseconds (1/1000 of a second).
     #debug: Turns on print statements to see what the sensor_lf is seeing and to say how long the timer went for.
-    def lineFollowForTime(self, p=1, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, time=10000, debug=False):
-        if (sensor_lf == -1):
+    def lineFollowForTime(self, p=1, DRIVE_SPEED=100, sensor_lf=None, time=10000, debug=False):
+        if (sensor_lf == None):
             sensor_lf = self.colorSensor2
         self.stopWatch.reset()
         self.stopWatch.resume()
@@ -137,7 +135,7 @@ class FUNCTION_LIBRARY:
         PROPORTIONAL_GAIN = p
         #BLACK = 9 #what is black
         #WHITE = 85 #what is white, also what is life (42)
-        threshold = (BLACK + WHITE) / 2 #the center of black+white
+        threshold = (self.black + self.white) / 2 #the center of black+white
 
         while True: #forever, do
 
@@ -164,13 +162,12 @@ class FUNCTION_LIBRARY:
     #sensor_lf: Sensor to line follow with.
     #distance: Distance to stop at in millimeters (1/1000 of a meter or 25.4 millimeters per inch)
     #debug: Turns on print statements to see what the sensor_lf is seeing.
-    def lineFollowForDistance(self, p=1, DRIVE_SPEED=100, BLACK=9, WHITE= 85, sensor_lf=-1, distance=10000, debug=False):
-        if (sensor_lf == -1):
+    def lineFollowForDistance(self, p=1, DRIVE_SPEED=100, sensor_lf=None, distance=10000, debug=False):
+        if (sensor_lf == None):
             sensor_lf = self.colorSensor2
-        elif (sensor_lf == -2):
-            sensor_lf = self.colorSensor1
         PROPORTIONAL_GAIN = p
-        threshold = (BLACK + WHITE) / 2 #the center of black+white
+        # threshold = (self.black + self.white) / 2 #the center of black+white
+        threshold = ((self.white - self.black)*0.7)
         startingDistance = self.driveBase.distance()
         while True: #forever, do
             if (debug):
@@ -187,19 +184,24 @@ class FUNCTION_LIBRARY:
     #PARAMS:
     #degrees: The number of degrees the robot turned.
     #speed: The speed the robot turns at in mm/s.
-    def turn(self, degrees, speed=100):
+    def turn(self, degrees, speed=100, precision=2):
         turnMode = ""
-        #if (self.gyro3Drift):
-        self.driveBase.turn(degrees)
-        """elif (not self.gyro3Drift):
+        if (self.gyro3Drift):
+            self.driveBase.turn(degrees)
+        elif (not self.gyro3Drift):
             self.gyroscope3.reset_angle(0)
 
-            self.driveBase.drive(0, speed)
+            if degrees < 0:
+                self.driveBase.drive(0, -speed)
+            else:
+                self.driveBase.drive(0, speed)
             while True:
-                if degrees >= self.gyroscope3.angle():
+                if degrees - precision < self.gyroscope3.angle() < degrees + precision:
                     break
 
-            self.driveBase.stop()"""
+            self.driveBase.stop()
+            self.leftDriveMotor.brake()
+            self.rightDriveMotor.brake()
     
     def mmToInch(self, mm):
         return mm/25.4
