@@ -42,7 +42,7 @@ class FUNCTION_LIBRARY:
     #PURPOSE: Calibrates Gyroscopes
     #PARAMS: None
     def checkGyroscopes(self):
-        if self.gyroscope3 != -1: self.gyroscope3.reset_angle(0)
+        if self.gyroscope3 != None: self.gyroscope3.reset_angle(0)
 
         try: print("Gyro 3 Angle First: " + str(self.gyroscope3.angle()))
         except: print("Gyro 3 Angle First: [Error]")
@@ -52,7 +52,7 @@ class FUNCTION_LIBRARY:
         try: print("Gyro 3 Angle Second: " + str(self.gyroscope3.angle()))
         except: print("Gyro 3 Angle Second: [Error]")
 
-        if self.gyroscope3 != -1: self.gyro3Drift = (self.gyroscope3.angle() != 0)
+        if self.gyroscope3 != None: self.gyro3Drift = (self.gyroscope3.angle() != 0)
         else: self.gyro3Drift = True
 
         print("Gyro 3 Drift: " + str(self.gyro3Drift))

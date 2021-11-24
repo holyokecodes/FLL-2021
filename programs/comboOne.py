@@ -15,9 +15,6 @@ def comboOne(library):
     #center medium depth container: 139-154mm
     #center forward container
     #center back container
-    library.turn(90)
-    library.turn(-90)
-    library.leftAttachment.run_until_stalled(-200)
     wait(500)
     distance = library.ultrasonicSensor4.distance()
     if (distance < 150):
@@ -27,12 +24,12 @@ def comboOne(library):
             print ("green: " + str(distance))
         while True:
             library.rightAttachment.reset_angle(0)
-            library.rightAttachment.run_target(100, 100)
+            library.rightAttachment.run_target(50, 100)
             library.turn(90, 200) 
             library.driveBase.straight(-115)
             library.turn(-90, 200)
             library.leftAttachment.reset_angle(0)
-            library.leftAttachment.run_target(100, -120)
+            library.leftAttachment.run_target(50, -100)
             distance = library.ultrasonicSensor4.distance()
             if (distance < 150):
                 if (distance > 125):
