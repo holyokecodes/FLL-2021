@@ -5,6 +5,7 @@ from time import sleep
 from pybricks.media.ev3dev import Image
 from pybricks.parameters import Button
 from pybricks.tools import StopWatch
+from math import *
 
 
 class FUNCTION_LIBRARY:
