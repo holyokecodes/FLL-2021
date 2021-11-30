@@ -9,4 +9,7 @@ from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboFour(library):
     while True:
-        print(library.colorSensor1.reflection())
+        print("Untrasonic Sensor 4: " + str(library.ultrasonicSensor4.distance()))
+        print("Color Sensor 2: " + str(library.colorSensor2.reflection()))
+        print("Color Sensor 1: " + str(library.colorSensor1.reflection()))
+        wait(1000)
