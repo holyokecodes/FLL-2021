@@ -90,5 +90,3 @@ def comboOne(library):
     library.driveBase.straight(300)
     library.leftAttachment.run_until_stalled(-500)
     library.driveBase.straight(-200)
-
-    library.driveBase.stop()
