@@ -199,8 +199,24 @@ class FUNCTION_LIBRARY:
             while True:
                 if abs(degrees) - abs(self.gyroscope3.angle()) <= precision:
                     break
-
+            
             self.driveBase.stop()
+    
+    def turnMotor(self, motor, degrees, speed, standard=True, precision=2):
+        if standard:
+            motor.run_target(abs(speed), degrees)
+            motor.stop()
+        else:
+            motor.run(speed)
+            if degrees < 0:
+                motor.run(-speed)
+            else:
+                motor.run(speed)
+            while True:
+                if abs(degrees) - abs(motor.angle()) <= precision:
+                    break
+            motor.stop()
+
     
     def mmToInch(self, mm):
         return mm/25.4
