@@ -201,8 +201,6 @@ class FUNCTION_LIBRARY:
                     break
 
             self.driveBase.stop()
-            self.leftDriveMotor.brake()
-            self.rightDriveMotor.brake()
     
     def mmToInch(self, mm):
         return mm/25.4
