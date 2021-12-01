@@ -107,6 +107,7 @@ while True:
     if Button.UP in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboFour.PNG'))
         comboFour(library)
+        
     
     ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 

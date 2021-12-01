@@ -8,4 +8,6 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboThree(library):
-    pass
+    library.lineFollowForDistance(distance=library.inchToMM(37),p=.9,sensor_lf=library.colorSensor1)
+    #library.leftAttachment.run_angle(20, 45)
+    
