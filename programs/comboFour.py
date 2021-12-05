@@ -8,8 +8,47 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboFour(library):
-    while True:
-        print("Untrasonic Sensor 4: " + str(library.ultrasonicSensor4.distance()))
-        print("Color Sensor 2: " + str(library.colorSensor2.reflection()))
-        print("Color Sensor 1: " + str(library.colorSensor1.reflection()))
-        wait(1000)
+    #Running motor until stalled to align the attachment, then stop.
+    library.rightAttachment.run_until_stalled(60)
+    library.rightAttachment.stop()
+
+     #Go up to the line to line follow
+    library.driveBase.straight(library.inchToMM(6.5))
+    library.turn(40, 100) 
+    library.driveBase.straight(library.inchToMM(8)) 
+    
+    #Line follow to truck, and push it
+    library.lineFollowForDistance(distance=library.inchToMM(18.25),DRIVE_SPEED=120,p=-.9,sensor_lf=library.colorSensor1)
+    
+    #Knock over first bridge
+    library.rightAttachment.run_angle(-60, 30)
+    library.lineFollowForDistance(distance=library.inchToMM(4.25),DRIVE_SPEED=120,p=-.9,sensor_lf=library.colorSensor1)
+    library.rightAttachment.run_angle(-60, 30)
+
+    #Knock over second bridge
+    library.lineFollowForDistance(distance=library.inchToMM(7.5),DRIVE_SPEED=120,p=-.9,sensor_lf=library.colorSensor1)
+    library.rightAttachment.run_angle(60, 45)
+    library.driveBase.straight(library.inchToMM(-4))
+
+    #Head towards crane
+    library.lineFollowForDistance(distance=library.inchToMM(11.75),DRIVE_SPEED=120,p=-.9,sensor_lf=library.colorSensor1)
+    library.turn(225)
+    library.driveBase.straight(library.inchToMM(9))
+    library.turn(-15)
+
+    #Push the crane back, and begin getting ready to go to the Accident Avoidance
+    library.driveBase.straight(library.inchToMM(-14))
+    library.driveBase.straight(library.inchToMM(22))
+
+    #Go to Accident Avoidance and knock it over.
+    library.driveBase.turn(-120)
+    library.driveBase.straight(library.inchToMM(-8.75))
+    library.rightAttachment.stop()
+    library.driveBase.stop()
+    #library.turn(20)
+"""
+    library.driveBase.turn(90)
+    library.driveBase.straight(library.inchToMM(-20))
+    library.driveBase.turn(90)
+    library.driveBase.straight(library.inchToMM(3.5))
+    """
