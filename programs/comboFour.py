@@ -8,8 +8,11 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import Image, SoundFile, ImageFile
 
 def comboFour(library):
-    
-    #Go up to the line to line follow
+    #Running motor until stalled to align the attachment, then stop.
+    library.rightAttachment.run_until_stalled(60)
+    library.rightAttachment.stop()
+
+     #Go up to the line to line follow
     library.driveBase.straight(library.inchToMM(6.5))
     library.turn(40, 100) 
     library.driveBase.straight(library.inchToMM(8)) 
