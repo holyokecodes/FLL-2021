@@ -18,5 +18,13 @@
             "program": "/home/robot/${workspaceFolderBasename}/programs/calibrate.py",
             "interactiveTerminal": true
         }
+        ,
+        {
+            "name": "Debug",
+            "type": "ev3devBrowser",
+            "request": "launch",
+            "program": "/home/robot/${workspaceFolderBasename}/programs/debug.py",
+            "interactiveTerminal": true
+        }
     ]
 }
