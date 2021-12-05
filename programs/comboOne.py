@@ -12,9 +12,10 @@ def goToNext(library):
     library.driveBase.straight(-90)
     library.turn(-90)
 
-def goToPrev(library):
+def goToPrev(library, times=1):
     library.turn(90)
-    library.driveBase.straight(90)
+    for i in range(times):
+        library.driveBase.straight(90)
     library.turn(-90)
 
 def comboOne(library):
@@ -29,7 +30,8 @@ def comboOne(library):
     greenPos = -1
     bluePos = -1
 
-    library.leftAttachment.run_until_stalled(300)
+    library.leftAttachment.run_until_stalled(-300)
+    library.rightAttachment.run_until_stalled(300)
     distance = library.ultrasonicSensor4.distance()
     if (distance < 185):
         if (distance > 150):
@@ -56,39 +58,37 @@ def comboOne(library):
         print ("blue: " + str(distance))
         bluePos = 2
     
-    goToNext(library)
-    distance = library.ultrasonicSensor4.distance()
+    # goToNext(library)
+    # distance = library.ultrasonicSensor4.distance()
 
-    if (distance < 185):
-        if (distance > 150):
-            print ("orange: " + str(distance))
-            orangePos = 3
-        else:
-            print ("green: " + str(distance))
-            greenPos = 3
-    else:
-        print ("blue: " + str(distance))
-        bluePos = 3
+    # if (distance < 185):
+    #     if (distance > 150):
+    #         print ("orange: " + str(distance))
+    #         orangePos = 3
+    #     else:
+    #         print ("green: " + str(distance))
+    #         greenPos = 3
+    # else:
+    #     print ("blue: " + str(distance))
+    #     bluePos = 3
+    # if (bluePos == 2):
+    #     goToPrev(library)
+    # elif (bluePos == 1):
+    #     goToPrev(library, 2)
 
-    if (bluePos == 2):
-        goToPrev(library)
-    elif (bluePos == 1):
-        goToPrev(library)
-        goToPrev(library)
+    if (orangePos == 1 and greenPos == 2): bluePos = 3
     
     library.leftAttachment.reset_angle(0)
-    library.leftAttachment.run_target(300, -165)
+    library.leftAttachment.run_target(300, 100)
     library.driveBase.straight(100)
     library.leftAttachment.reset_angle(0)
-    library.leftAttachment.run_target(200, 120)
+    library.leftAttachment.run_target(200, -100)
     library.driveBase.straight(-100)
 
     if (bluePos == 1): library.turn(190)
     elif (bluePos == 2): library.turn(180)
     elif (bluePos == 3): library.turn(170)
 
-    library.driveBase.straight(300)
-    library.leftAttachment.run_until_stalled(-500)
+    library.driveBase.straight(250)
+    library.leftAttachment.run_until_stalled(500)
     library.driveBase.straight(-200)
-
-    library.driveBase.stop()

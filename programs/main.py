@@ -95,19 +95,22 @@ while True:
     if Button.LEFT in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboOne.PNG'))
         comboOne(library)
+        robot.stop()
 
     if Button.RIGHT in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboTwo.PNG'))
         comboTwo(library)
+        robot.stop()
 
     if Button.DOWN in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboThree.PNG'))
         comboThree(library)
+        robot.stop()
 
     if Button.UP in ev3.buttons.pressed():
         ev3.screen.load_image(Image('GUI/ComboFour.PNG'))
         comboFour(library)
-        
+        robot.stop()
     
     ev3.screen.load_image(Image('GUI/ComboButtons.PNG'))
 
