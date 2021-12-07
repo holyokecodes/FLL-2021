@@ -10,7 +10,7 @@ from math import *
 
 
 class FUNCTION_LIBRARY:
-    def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, ultrasonicSensor4):
+    def __init__(self, robot, ev3, leftDriveMotor, rightDriveMotor, leftAttachment, rightAttachment, colorSensor1, colorSensor2, gyroscope3, infraredSensor4):
         #self, DriveBase, Hub
         self.driveBase = robot
         self.hub = ev3
@@ -28,7 +28,7 @@ class FUNCTION_LIBRARY:
         self.colorSensor1 = colorSensor1 
         self.colorSensor2 = colorSensor2
         self.gyroscope3 = gyroscope3
-        self.ultrasonicSensor4 = ultrasonicSensor4
+        self.infraredSensor4 = infraredSensor4
 
         self.black = 9
         self.white = 85

@@ -3,14 +3,21 @@ from pybricks.tools import wait
 
 def comboTwo(library):
     #Go up to the line to line follow
-    library.driveBase.straight(library.inchToMM(6.5))
-    library.turn(40, 100) 
-    library.driveBase.straight(library.inchToMM(8.189)) 
+    library.leftAttachment.run_target(100, -50, wait=False)
+    library.leftAttachment.hold()
+    library.rightAttachment.run_target(100, -50, wait=False)
+    library.rightAttachment.hold()
+
+    library.turn(-15)
+    library.driveBase.straight(90)
+    library.turn(-40)
+    library.driveBase.straight(320)
+    return 
 
     #line follow till bridge
     #library.lineFollowUntilShade(SHADE=93, DRIVE_SPEED=10, p=-.9)
     #lineFollow 
-    library.lineFollowForDistance(distance=library.inchToMM(48),DRIVE_SPEED=120,p=-.9,sensor_lf=library.colorSensor1)
+    library.lineFollowForDistance(distance = library.inchToMM(48), DRIVE_SPEED = 120, p = -0.9, sensor_lf = library.colorSensor1)
     #strait again
     library.driveBase.drive(library.inchToMM(3.5),22)
     wait(2000)
