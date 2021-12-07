@@ -14,13 +14,13 @@ mediumMotorD = Motor(Port.D)
 colorSensor1 = ColorSensor(Port.S1)
 colorSensor2 = ColorSensor(Port.S2)
 gyro3 = GyroSensor(Port.S3)
-ultrasonicSensor4 = UltrasonicSensor(Port.S4)
+infraredSensor4 = InfraredSensor(Port.S4)
 
 while True:
     print("Color Sensor 1: " + str(colorSensor1.reflection()))
     print("Color Sensor 2: " + str(colorSensor2.reflection()))
-    print("Untrasonic Sensor 3: " + str(gyro3.distance()))
-    print("Untrasonic Sensor 4: " + str(ultrasonicSensor4.distance()))
+    print("Gyroscope 3: " + str(gyro3.angle()))
+    print("Untrasonic Sensor 4: " + str(infraredSensor4.distance()))
 
     print("\n==========================\n")
 
