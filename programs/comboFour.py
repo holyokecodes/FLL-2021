@@ -11,10 +11,10 @@ def comboFour(library):
     #Running motor until stalled to align the attachment, then stop.
     #library.rightAttachment.run_until_stalled(30)
     #library.rightAttachment.stop()
-    library.rightAttachment.run_time(60, 62)
-     #Go up to the line to line follow
+    library.rightAttachment.run_angle(-60, 40)
+     #Go up to the line to line follow5
     library.driveBase.straight(library.inchToMM(6.5))
-    library.turn(40, 100) 
+    library.turn(45, 100) 
     library.driveBase.straight(library.inchToMM(8)) 
     
     #Line follow to truck, and push it
@@ -31,20 +31,21 @@ def comboFour(library):
     library.driveBase.straight(library.inchToMM(-4))
 
     #Head towards crane
-    library.lineFollowForDistance(distance=library.inchToMM(11.25),DRIVE_SPEED=100,p=-.7,sensor_lf=library.colorSensor1)
-    library.turn(-115)
-    library.driveBase.straight(library.inchToMM(8.25))
-    library.turn(-12)
+    library.lineFollowForDistance(distance=library.inchToMM(6.25),DRIVE_SPEED=100,p=-1.2,sensor_lf=library.colorSensor1)
+    library.lineFollowForDistance(distance=library.inchToMM(5),DRIVE_SPEED=100,p=-.7,sensor_lf=library.colorSensor1)
+    library.turn(-125)
+    library.driveBase.straight(library.inchToMM(8.75))
+    library.turn(-20)
 
     
 
     #Push the crane back, and begin getting ready to go to the Accident Avoidance
-    library.driveBase.straight(library.inchToMM(-13))
+    library.driveBase.straight(library.inchToMM(-12.75))
     library.driveBase.straight(library.inchToMM(20))
     
     #Go to Accident Avoidance and knock it over.
     library.driveBase.turn(-125)
-    library.driveBase.straight(library.inchToMM(-8.25))
+    library.driveBase.straight(library.inchToMM(-8.6))
     library.rightAttachment.stop()
     library.driveBase.stop()
 """
