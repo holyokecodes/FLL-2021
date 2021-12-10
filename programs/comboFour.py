@@ -41,7 +41,7 @@ def comboFour(library):
 
     #Push the crane back, and begin getting ready to go to the Accident Avoidance
     library.driveBase.straight(library.inchToMM(-12.75))
-    library.driveBase.straight(library.inchToMM(20))
+    library.driveBase.straight(library.inchToMM(19))
     
     #Go to Accident Avoidance and knock it over.
     library.driveBase.turn(-125)

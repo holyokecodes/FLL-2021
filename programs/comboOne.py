@@ -32,88 +32,14 @@ def pickUp(library):
     library.driveBase.straight(-100)
 
 def comboOne(library):
-    #left medium depth container: 125mm-150mm
-    #left forward container
-    #left back container
-  
-    #center medium depth container: 139-154mm
-    #center forward container
-    #center back container
-    orangePos = -1
-    greenPos = -1
-    bluePos = -1
-
-    library.leftAttachment.run_until_stalled(-300)
-    library.rightAttachment.run_until_stalled(300)
-
-    distance = library.infraredSensor4.distance()
-    if (distance < 13):
-        if (distance >= 10):
-            print ("orange: " + str(distance))
-            if orangePos == -1: orangePos = 1
-        else:
-            print ("green: " + str(distance))
-            if greenPos == -1: greenPos = 1
-    else:
-        print ("blue: " + str(distance))
-        if bluePos == -1: bluePos = 1
-
-    library.turn(-10)
-    library.driveBase.straight(-30)
-    library.turn(-80)
-    library.driveBase.straight(-100)
-    library.turn(90)
-    library.driveBase.straight(10)
-
-    distance = library.infraredSensor4.distance()
-    
-    if (distance < 14):
-        if (distance > 11):
-            print ("orange: " + str(distance))
-            if orangePos == -1: orangePos = 2
-        else:
-            print ("green: " + str(distance))
-            if greenPos == -1: greenPos = 2
-    else:
-        print ("blue: " + str(distance))
-        if bluePos == -1: bluePos = 2
-
-    if (orangePos == 1 and greenPos == 2):
-        bluePos = 3
-        print("O: 1, G: 2, therefore, B:3")
-    if (orangePos == 2 and greenPos == 1):
-        bluePos = 3
-        print("O: 2, G: 1, therefore, B:3")
-
-    if (bluePos == 1 and greenPos == 2):
-        orangePos = 3
-        print("B: 1, G: 2, therefore, O:3")
-    if (bluePos == 2 and greenPos == 1):
-        orangePos = 3
-        print("B: 2, G: 1, therefore, O:3")
-
-    if (orangePos == 1 and bluePos == 2):
-        greenPos = 3
-        print("O: 1, B: 2, therefore, G:3")
-    if (orangePos == 2 and bluePos == 1):
-        greenPos = 3
-        print("O: 2, B: 1, therefore, G:3")
-
-    print(bluePos)
-    
-    goToCorrectPos(library, bluePos)
-
-    if(bluePos == 3): library.turn(10)
-    pickUp(library)
-
-    if (bluePos == 1):
-        library.turn(-30)
-        library.driveBase.straight(-100)
-        library.turn(195)
-        library.driveBase.straight(140)
-    if (bluePos == 2):
-        library.turn(175)
-        library.driveBase.straight(200)
-
-    library.leftAttachment.run_until_stalled(500)
-    library.driveBase.straight(-200)
+    #goes back and forth fast to push three cargo containers into a black circle
+    library.driveBase.settings(straight_speed=1000)
+    library.driveBase.straight(library.inchToMM(21.5))
+    library.driveBase.stop()
+    library.driveBase.straight(library.inchToMM(-21.5))
+    library.driveBase.stop()
+    library.driveBase.settings(straight_speed=100)
+    #power and the money,
+    #money and the power,
+    #day after day 
+    #hour after hour
