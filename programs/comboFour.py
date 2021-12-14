@@ -38,12 +38,18 @@ def comboFour(library):
 
     #Head towards crane
     library.turn(80)
+    library.driveBase.stop()
+    library.driveBase.settings(straight_speed=250)
     library.driveBase.straight(235)
     library.turn(-32)
+    library.driveBase.stop()
+    library.driveBase.settings(straight_speed=500)
     library.driveBase.straight(-360)
 
     #Go to Accident Avoidance and knock it over.
     library.driveBase.straight(500)
+    library.driveBase.stop()
+    library.driveBase.settings(straight_speed=100)
     library.turn(-125)
     library.driveBase.straight(library.inchToMM(-8.75))
 
