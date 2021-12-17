@@ -40,7 +40,7 @@ def comboFour(library):
     library.turn(80)
     library.driveBase.stop()
     library.driveBase.settings(straight_speed=250)
-    library.driveBase.straight(235)
+    library.driveBase.straight(255)
     library.turn(-32)
     library.driveBase.stop()
     library.driveBase.settings(straight_speed=500)
