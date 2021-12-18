@@ -43,11 +43,11 @@ def comboFour(library):
     library.driveBase.straight(255)
     library.turn(-32)
     library.driveBase.stop()
-    library.driveBase.settings(straight_speed=500)
+    library.driveBase.settings(straight_speed=400)
     library.driveBase.straight(-360)
 
     #Go to Accident Avoidance and knock it over.
-    library.driveBase.straight(500)
+    library.driveBase.straight(475)
     library.driveBase.stop()
     library.driveBase.settings(straight_speed=100)
     library.turn(-125)
