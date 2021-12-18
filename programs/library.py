@@ -35,6 +35,8 @@ class FUNCTION_LIBRARY:
 
         self.gyro3Drift = False
 
+        self.currentFile = ""
+
     #PURPOSE: Calibrates robot
     #PARAMS: None
     def calibrate(self):
@@ -58,6 +60,9 @@ class FUNCTION_LIBRARY:
         else: self.gyro3Drift = True
 
         print("Gyro 3 Drift: " + str(self.gyro3Drift))
+
+        if (self.gyro3Drift): self.hub.speaker.say("The gyroscope DOES have drift, ZACH")
+        else: self.hub.speaker.say("The gyroscope DOES NOT have drift, ZACH")
     
     #PURPOSE: Calibrates Color Sensors
     #PARAMS: None
@@ -220,6 +225,27 @@ class FUNCTION_LIBRARY:
                 if abs(degrees) - abs(motor.angle()) <= precision:
                     break
             motor.stop()
+
+    def openFile(self, path):
+        self.currentFile.open(path, "w+")
+    def closeFile(self):
+        self.currentFile.close()
+
+    def getSetting(self, name):
+        lines = self.currentFile.readlines()
+        for line in lines:
+            if line[1:(len(name)+1)] == name:
+                print(line[(len(name)+1):-1])
+            else:
+                print(line[1:(len(name)+1)])
+
+    def setSetting(self, name, value):
+        try:
+            self.currentFile.write(str(name)+ " " + str(value) + "\n")
+            return True
+        except:
+            print("LIBRARY ERROR: Could not find the setting " + name + "!")
+            return False
     
     def mmToInch(self, mm):
         return mm/25.4
@@ -229,3 +255,8 @@ class FUNCTION_LIBRARY:
         return ms/1000
     def secondToMS(self, s):
         return s*1000
+    
+    def degToRad(self, deg):
+        return deg*(180/pi)
+    def radToDeg(self, rad):
+        return rad*(pi/180)
